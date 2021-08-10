@@ -12,6 +12,8 @@ export default function MyChart () {
     let categories = [];
     let seriesData = [];
 
+    console.log(users)
+
     if (users.calculatedRR7Value) {
       // поиск уникальных значений
       users.value.map(user => {
@@ -30,6 +32,9 @@ export default function MyChart () {
         })
         return usersWithThisPeriodsValues
       })
+
+      console.log(seriesData, '   ',
+        categories)
 
       setSeriesData(seriesData);
       setCategories(categories);

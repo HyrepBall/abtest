@@ -183,7 +183,6 @@ class EditableTable extends React.Component {
   }
 
   handleSave = (row) => {
-    console.log(row)
     const newData = [...this.state.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
@@ -250,20 +249,16 @@ class EditableTable extends React.Component {
       }
     })
 
-    console.log(
-      'rr7returnedUsersCountAfterThenX ', rr7returnedUsersCountAfterThenX
-    )
-
-    console.log(
-      'rr7registeredUsersMoreThanX ', rr7registeredUsersMoreThanX
-    )
-
-    console.log(
-      (rr7returnedUsersCountAfterThenX / rr7registeredUsersMoreThanX * 100).toFixed(2)
-    )
+    console.log('rr7returnedUsersCountAfterThenX ', rr7returnedUsersCountAfterThenX)
+    console.log('rr7registeredUsersMoreThanX ', rr7registeredUsersMoreThanX)
+    console.log((rr7returnedUsersCountAfterThenX / rr7registeredUsersMoreThanX * 100).toFixed(2))
 
     handleCalculateRR7((rr7returnedUsersCountAfterThenX / rr7registeredUsersMoreThanX * 100).toFixed(2))
     handleSaveUsers(usersWithLivePeriod);
+
+    this.setState({
+      dataSource: usersWithLivePeriod
+    })
   }
 
   render () {
