@@ -132,50 +132,50 @@ class EditableTable extends React.Component {
         {
           key: '1',
           user_id: '1',
-          registration_date: '24.12.2021',
-          last_activity_date: '25.12.2021',
+          registration_date: '01.08.2021',
+          last_activity_date: '08.08.2021',
         },
         {
           key: '2',
           user_id: '2',
-          registration_date: '05.06.2021',
-          last_activity_date: '16.06.2021',
+          registration_date: '01.08.2021',
+          last_activity_date: '07.08.2021',
         },
         {
           key: '3',
           user_id: '3',
-          registration_date: '05.06.2021',
-          last_activity_date: '16.06.2021',
+          registration_date: '08.08.2021',
+          last_activity_date: '08.08.2021',
         },
         {
           key: '4',
           user_id: '4',
-          registration_date: '05.06.2021',
-          last_activity_date: '16.06.2021',
+          registration_date: '08.08.2021',
+          last_activity_date: '08.08.2021',
         },
         {
           key: '5',
           user_id: '5',
-          registration_date: '05.06.2021',
-          last_activity_date: '08.06.2021',
+          registration_date: '08.08.2021',
+          last_activity_date: '08.08.2021',
         },
         {
           key: '6',
           user_id: '6',
-          registration_date: '05.06.2021',
-          last_activity_date: '08.06.2021',
+          registration_date: '08.08.2021',
+          last_activity_date: '08.08.2021',
         },
         {
           key: '7',
           user_id: '7',
-          registration_date: '05.06.2021',
-          last_activity_date: '08.06.2021',
+          registration_date: '08.08.2021',
+          last_activity_date: '08.08.2021',
         },
         {
           key: '8',
           user_id: '8',
-          registration_date: '05.06.2021',
-          last_activity_date: '08.06.2021',
+          registration_date: '08.08.2021',
+          last_activity_date: '08.08.2021',
         },
       ],
       count: 3,
@@ -186,6 +186,18 @@ class EditableTable extends React.Component {
     const newData = [...this.state.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
+
+    let last_activity_date = moment(row.last_activity_date.split('.').reverse());
+    let reg_date = moment(row.registration_date.split('.').reverse());
+
+    if (moment(last_activity_date).isBefore(reg_date)) {
+      notification.warning({
+        message: 'Проверьте правильность введенных данных'
+      })
+
+      return
+    }
+
     newData.splice(index, 1, { ...item, ...row });
     this.setState({
       dataSource: newData,
@@ -223,16 +235,19 @@ class EditableTable extends React.Component {
       let act = user.last_activity_date
         .split('.')
         .reverse()
-      act[1] = Number(act[1]) - 1
+      // act[1] = Number(act[1]) - 1
       act = moment(act);
 
       let reg = user.registration_date
         .split('.')
         .reverse()
-      reg[1] = Number(reg[1]) - 1
+      // reg[1] = Number(reg[1]) - 1
       reg = moment(reg);
 
-      let now = moment(moment().format())
+      let now = moment().format('DD.MM.YYYY')
+        .split('.')
+        .reverse()
+      now = moment(now)
 
       // Если зашли на 7+ день после рега
       if (act.diff(reg, 'days') >= 7) {

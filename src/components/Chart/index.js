@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Chart from "react-apexcharts";
+import * as isEqual from 'lodash.isequal'
 
 export default function MyChart () {
   const users = useSelector((state) => state.users)
@@ -11,8 +12,11 @@ export default function MyChart () {
   useEffect(() => {
     let categories = [];
     let seriesData = [];
+    const max = Math.max(...users.value.map(o => o.livePeriodInDays), 0);
 
-    console.log(users)
+    for (let index = 0; index < max; index++) {
+      categories.push(index)
+    }
 
     if (users.calculatedRR7Value) {
       // поиск уникальных значений
@@ -33,13 +37,10 @@ export default function MyChart () {
         return usersWithThisPeriodsValues
       })
 
-      console.log(seriesData, '   ',
-        categories)
-
       setSeriesData(seriesData);
       setCategories(categories);
     }
-  }, [users.value])
+  }, [users.value, users.calculatedRR7Value])
 
   if (!!!users?.calculatedRR7Value) {
     return null
@@ -79,8 +80,13 @@ class AppChart extends React.Component {
 
   componentDidUpdate (prevProps) {
     const { seriesData, categories } = this.props;
+    const { series } = this.state;
 
-    if (seriesData?.length !== this.state.series[0].data.length) {
+
+    console.log(seriesData, series[0].data)
+
+    if (!isEqual(seriesData, series[0].data)) {
+
       this.setState({
         options: {
           ...this.state.options,
@@ -94,6 +100,7 @@ class AppChart extends React.Component {
           data: seriesData
         }]
       })
+
     }
   }
 
@@ -106,7 +113,7 @@ class AppChart extends React.Component {
               options={ this.state.options }
               series={ this.state.series }
               type="bar"
-              width="500"
+              width="1000"
             />
           </div>
         </div>

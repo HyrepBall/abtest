@@ -12,6 +12,7 @@
     "antd": "^4.16.10",
     "apexcharts": "^3.27.3",
     "firebase": "^8.8.1",
+    "lodash.isequal": "^4.5.0",
     "moment": "^2.29.1",
     "node-sass": "5",
     "react": "^17.0.2",
