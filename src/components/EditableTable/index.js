@@ -199,7 +199,7 @@ class EditableTable extends React.Component {
 
     handleSaveUsers(dataSource);
     notification.success({
-      message: 'Таблица сохранена',
+      message: 'Таблица сохранена (консоль)',
     })
     // Можно считать, что будет запрос на сервер
     // axios.post('api_url', {users: dataSource})

@@ -12,41 +12,39 @@ export default function MyChart () {
     let categories = [];
     let seriesData = [];
 
-    // поиск уникальных значений
-    users.value.map(user => {
-      if (!categories.includes(user.livePeriodInDays)) {
-        categories.push(user.livePeriodInDays)
-      }
-      return null
-    });
-    // соритровка по возрастанию
-    categories.sort((a, b) => a - b);
-
-    seriesData = categories.map(periodItem => {
-      let usersWithThisPeriodsValues = 0;
+    if (users.calculatedRR7Value) {
+      // поиск уникальных значений
       users.value.map(user => {
-        if (periodItem === user.livePeriodInDays) usersWithThisPeriodsValues += 1
-      })
-      return usersWithThisPeriodsValues
-    })
+        if (!categories.includes(user.livePeriodInDays)) {
+          categories.push(user.livePeriodInDays)
+        }
+        return null
+      });
+      // соритровка по возрастанию
+      categories.sort((a, b) => a - b);
 
-    setSeriesData(seriesData);
-    setCategories(categories);
-  }, [users])
+      seriesData = categories.map(periodItem => {
+        let usersWithThisPeriodsValues = 0;
+        users.value.map(user => {
+          if (periodItem === user.livePeriodInDays) usersWithThisPeriodsValues += 1
+        })
+        return usersWithThisPeriodsValues
+      })
+
+      setSeriesData(seriesData);
+      setCategories(categories);
+    }
+  }, [users.value])
+
+  if (!!!users?.calculatedRR7Value) {
+    return null
+  }
 
   return (
     <div>
-      {
-        !!users.calculatedRR7Value
-          ?
-          <>
-            <h2>
-              Rolling Retention 7 day: { `${users.calculatedRR7Value}%` }
-            </h2>
-
-          </>
-          : null
-      }
+      <h2>
+        Rolling Retention 7 day: { `${users.calculatedRR7Value}%` }
+      </h2>
       <AppChart seriesData={ seriesData } categories={ categories } />
     </div>
   )
